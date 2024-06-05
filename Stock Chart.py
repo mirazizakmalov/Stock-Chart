@@ -1,10 +1,12 @@
 import pandas as pd 
 import yfinance as yf
-import datetime
 from datetime import date, timedelta
 
 import plotly.express as px
+
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
 
 
 #Variables
@@ -29,6 +31,10 @@ print(data)
 # figure.show()
 
 #CandleStick Graph with Volume
+figure = make_subplots(rows=2, cols=1, shared_xaxes=True,
+                    row_heights=[0.7, 0.3],  # Adjust heights as needed
+                    vertical_spacing=0.02)
+
 candlestick = go.Candlestick(
     x=data.index,
     open=data["Open"],
@@ -42,26 +48,18 @@ volume = go.Bar(
     x=data.index,
     y=data['Volume'],
     name='Volume',
-    marker_color='blue',
-    yaxis='y2'
+    marker_color='blue'
 )
 
-figure = go.Figure(data=[candlestick, volume])
-
+figure.add_trace(candlestick, row=1, col=1)
+figure.add_trace(volume, row=2, col=1)
 
 figure.update_layout(
     #The f before the string in f"{ticker} Stock Price and Volume Analysis" is used to create an f-string, which is a way to format strings in Python
     title=f"{ticker} Stock Price and Volume Analysis",
     xaxis_rangeslider_visible=True,
-    yaxis=dict(
-        title='Stock Price'
-    ),
-    yaxis2=dict(
-        title='Volume',
-        overlaying='y',
-        side='right',
-        showgrid=False
-    ),
+    yaxis_title='Stock Price',
+    yaxis2_title='Volume',
     legend=dict(
         orientation='h',
         x=0.5,
