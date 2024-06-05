@@ -28,18 +28,47 @@ print(data)
 # figure.update_layout(title = ticker + " Stock Price Analysis",  xaxis_rangeslider_visible=True)
 # figure.show()
 
-#CandleStick Graph
-figure = go.Figure(data=[go.Candlestick(
+#CandleStick Graph with Volume
+candlestick = go.Candlestick(
     x=data.index,
     open=data["Open"],
     high=data["High"],
     low=data["Low"],
-    close=data["Close"]
-)])
+    close=data["Close"],
+    name='Candlestick'
+)
+
+volume = go.Bar(
+    x=data.index,
+    y=data['Volume'],
+    name='Volume',
+    marker_color='blue',
+    yaxis='y2'
+)
+
+figure = go.Figure(data=[candlestick, volume])
+
 
 figure.update_layout(
-    title=f"{ticker} Stock Price Analysis",
-    xaxis_rangeslider_visible=False
+    #The f before the string in f"{ticker} Stock Price and Volume Analysis" is used to create an f-string, which is a way to format strings in Python
+    title=f"{ticker} Stock Price and Volume Analysis",
+    xaxis_rangeslider_visible=True,
+    yaxis=dict(
+        title='Stock Price'
+    ),
+    yaxis2=dict(
+        title='Volume',
+        overlaying='y',
+        side='right',
+        showgrid=False
+    ),
+    legend=dict(
+        orientation='h',
+        x=0.5,
+        xanchor='center',
+        y=1.1,
+        yanchor='top'
+    )
 )
 
 figure.show()
