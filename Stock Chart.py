@@ -4,6 +4,7 @@ import datetime
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import date, timedelta
+
 today = date.today()
 
 ticker = input("What stock ticker would you like to look at: " )
@@ -16,7 +17,7 @@ start_date = d2
 data = yf.download(ticker, start = start_date, end = end_date, progress=False)
 
 figure = px.line(data, x = data.index, y = "Close")
-figure.update_layout(title = ticker + " Stock Price Analysis",  xaxis_rangeslider_visible=False)
+figure.update_layout(title = ticker + " Stock Price Analysis",  xaxis_rangeslider_visible=True)
 print(data.head())
 #figure.show()
 
